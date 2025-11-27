@@ -1,30 +1,38 @@
 import { useState } from "react";
 import Button from "./components/Button";
-import Modal from "./components/modal/Modal";
+import ImportModal from "./components/modal/ImportModal";
 
-function App() {
+export default function App() {
   const [showModal, setShowModal] = useState(false);
-  const onClick = () => {
-    setShowModal(true);
-  };
-  return (
-    <div className="flex h-screen w-screen item-center justify-center">
-      <div>
-        <Button onClick={onClick} children={"click me"} />
-      </div>
+  const [importedJson, setImportedJson] = useState("");
 
-      <Modal
-        open={showModal}
-        onClose={() => setShowModal(false)}
-        title={"this is modal title"}
-      >
-        <div className="h-20 flex items-center justify-center flex-col">
-          <div>this is test modal descriptions</div>
-          <Button onClick={() => setShowModal(false)}>close</Button>
+  return (
+    <div className="h-screen w-screen flex items-center justify-center bg-gray-50">
+      <div className="grid grid-cols-3 gap-6 items-start w-[80%] ">
+        {/* Left Section */}
+        <div className="flex flex-col items-center">
+          <Button onClick={() => setShowModal(true)}> Import JSON</Button>
         </div>
-      </Modal>
+
+        {/* Separator */}
+        <div className="w-full h-full flex justify-center">
+          <div className="border-l border-gray-300 h-full"></div>
+        </div>
+
+        {/* Right Section */}
+        <div className="p-4 bg-white rounded shadow w-full">
+          <h3 className="text-lg font-semibold mb-2">Imported JSON:</h3>
+          <pre className="text-sm bg-gray-100 p-3 rounded">
+            {JSON.stringify(importedJson, null, 2)}
+          </pre>
+        </div>
+
+        <ImportModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          onImport={setImportedJson}
+        />
+      </div>
     </div>
   );
 }
-
-export default App;
