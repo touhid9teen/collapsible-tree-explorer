@@ -9,7 +9,7 @@ export default function ImportModal({ isOpen, onClose, onImport }) {
       const importedJson = JSON.parse(json);
       onImport(importedJson);
       setJson("");
-      onClose();
+      onClose()
     } catch {
       alert("Invalid JSON");
     }
