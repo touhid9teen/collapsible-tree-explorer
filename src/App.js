@@ -1,8 +1,7 @@
 import { useState } from "react";
 import Button from "./components/Button";
 import ImportModal from "./components/modal/ImportModal";
-import Breadcrumb from "./components/viewport/Breadcrumb";
-import { JSONPreview } from "./components/viewport/JSONPreview";
+import Viewport from "./components/viewport/Viewport";
 
 export default function App() {
   const [showModal, setShowModal] = useState(false);
@@ -17,18 +16,11 @@ export default function App() {
         </div>
 
         {/* Right Section */}
-        <div className="bg-white rounded-xl shadow-md border p-6 w-full">
-          {/* Breadcrumb */}
-          <div className="mb-6">
-            <Breadcrumb path="dashboard > import-json" />
-          </div>
 
-          {/* JSON Preview */}
-          <div className="mt-4">
-            <JSONPreview title="Imported JSON:" value={importedJson} />
-          </div>
-        </div>
-
+        <Viewport
+          selectedPath="dashboard > import-json"
+          currentValue={importedJson}
+        />
         {/* Modal */}
         <ImportModal
           isOpen={showModal}
