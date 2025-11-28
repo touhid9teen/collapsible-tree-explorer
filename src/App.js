@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "./components/Button";
 import ImportModal from "./components/modal/ImportModal";
+import Breadcrumb from "./components/viewport/Breadcrumb";
 
 export default function App() {
   const [showModal, setShowModal] = useState(false);
@@ -19,12 +20,19 @@ export default function App() {
           <div className="border-l border-gray-300 h-full"></div>
         </div>
 
-        {/* Right Section */}
-        <div className="p-4 bg-white rounded shadow w-full">
-          <h3 className="text-lg font-semibold mb-2">Imported JSON:</h3>
-          <pre className="text-sm bg-gray-100 p-3 rounded">
-            {JSON.stringify(importedJson, null, 2)}
-          </pre>
+        {/* Right Section with Breadcrumb */}
+        <div className="w-full">
+          {/* 👉 Breadcrumb above right content */}
+          <div className="mb-3 flex ">
+            <Breadcrumb path="dashboard > import-json" />
+          </div>
+
+          <div className="p-4 bg-white rounded shadow w-full">
+            <h3 className="text-lg font-semibold mb-2">Imported JSON:</h3>
+            <pre className="text-sm bg-gray-100 p-3 rounded">
+              {JSON.stringify(importedJson, null, 2)}
+            </pre>
+          </div>
         </div>
 
         <ImportModal
