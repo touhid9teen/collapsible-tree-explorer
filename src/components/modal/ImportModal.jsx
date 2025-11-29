@@ -9,7 +9,7 @@ export default function ImportModal({ isOpen, onClose, onImport }) {
       const importedJson = JSON.parse(json);
       onImport(importedJson);
       setJson("");
-      onClose()
+      onClose();
     } catch {
       alert("Invalid JSON");
     }
@@ -19,9 +19,16 @@ export default function ImportModal({ isOpen, onClose, onImport }) {
       <textarea
         value={json}
         onChange={(e) => setJson(e.target.value)}
-        className="w-full h-48 p-3 border border-gray-300 rounded font-mono text-sm mb-4 resize-none"
+        className="
+    w-full 
+    h-40 sm:h-48 md:h-56 lg:h-64
+    p-3 border border-gray-300 rounded font-mono text-sm mb-4 resize-none
+    focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500
+    transition-colors
+  "
         placeholder="Paste JSON here..."
       />
+
       <div className="flex gap-2 justify-end">
         <Button onClick={onClose} variant="secondary" children="Cancel" />
         <Button onClick={handleImport} variant="primary" children="Import" />
