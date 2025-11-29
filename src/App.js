@@ -33,7 +33,7 @@ export default function App() {
   return (
     <div className="min-h-screen w-full bg-gray-100 p-6 md:p-10">
       <div className="flex flex-col md:flex-row gap-6 h-full">
-        <div className="w-full md:w-1/2 bg-white rounded-xl shadow-md border p-6 flex flex-col overflow-hidden">
+        <div className="w-full md:w-1/2 bg-white rounded-xl shadow-md border p-6 flex flex-col ">
           <div>
             <Button onClick={() => setShowModal(true)}>Import JSON</Button>
           </div>

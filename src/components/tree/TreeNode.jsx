@@ -19,7 +19,7 @@ export default function TreeNode({
   const hasChildren = isObj && Object.keys(value).length > 0;
 
   return (
-    <div className="select-none">
+    <div className="select-none w-full">
       <div
         className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer hover:bg-gray-100 transition-colors duration-150 ${
           isSelected ? "bg-blue-100 border-l-2 border-blue-500" : ""
@@ -50,7 +50,7 @@ export default function TreeNode({
       </div>
 
       {isExpanded && hasChildren && (
-        <div className="border-l border-gray-300 ml-5 pl-3 mt-1">
+        <div className="border-l border-gray-300 ml-5 pl-3 mt-1 min-w-[200px]">
           {Object.entries(value).map(([childKey, childValue]) => (
             <TreeNode
               key={childKey}
