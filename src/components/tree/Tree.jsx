@@ -13,6 +13,7 @@ export default function Tree({
   onDragStart,
   onDragOver,
   onDrop,
+  onDragEnd,
 }) {
   if (!data || typeof data !== "object") return <p>No JSON Loaded</p>;
 
@@ -35,6 +36,7 @@ export default function Tree({
           onDragOver={onDragOver}
           onDrop={onDrop}
           draggedNode={draggedNode}
+          onDragEnd={onDragEnd}
         />
       ))}
     </div>

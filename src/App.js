@@ -119,6 +119,9 @@ export default function App() {
     setSelectedPath([...targetPath, draggedNode.key]);
     setDraggedNode(null);
   };
+  const handleDragEnd = (e) => {
+    setDraggedNode(null);
+  };
   const selectedKey =
     selectedPath.length > 0 ? selectedPath[selectedPath.length - 1] : "";
 
@@ -154,6 +157,7 @@ export default function App() {
               draggedNode={draggedNode}
               onDragStart={handleDragStart}
               onDragOver={handleDragOver}
+              onDragEnd={handleDragEnd}
               onDrop={handleDrop}
             />
           </div>

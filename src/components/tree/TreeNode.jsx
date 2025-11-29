@@ -17,6 +17,7 @@ export default function TreeNode({
   onDragOver,
   onDrop,
   draggedNode,
+  onDragEnd,
 }) {
   const isObj = isObject(value);
   const nodePath = [...path, nodeKey];
@@ -24,7 +25,7 @@ export default function TreeNode({
   const isSelected = JSON.stringify(nodePath) === JSON.stringify(selectedPath);
   const isExpanded = expandedNodes.has(pathStr);
   const hasChildren = isObj && Object.keys(value).length > 0;
-  const isDraggedOver =
+  const isDragging =
     draggedNode &&
     JSON.stringify(draggedNode.path) === JSON.stringify(nodePath);
 
@@ -33,11 +34,12 @@ export default function TreeNode({
       <div
         className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer hover:bg-gray-100 transition-colors duration-150 ${
           isSelected ? "bg-blue-100 border-l-2 border-blue-500" : ""
-        } `}
+        } ${isDragging ? " opacity-60 border-l-2 border-blue-500" : ""}`}
         draggable={true}
         onDragStart={(e) => onDragStart(e, nodePath, nodeKey)}
         onDragOver={(e) => onDragOver(e, nodePath, isObj)}
         onDrop={(e) => onDrop(e, nodePath)}
+        onDragEnd={(e) => onDragEnd(e)}
         onClick={() => onSelect(nodePath)}
       >
         {hasChildren ? (
@@ -60,21 +62,18 @@ export default function TreeNode({
 
         <span className="text-sm font-semibold text-gray-900">{nodeKey}</span>
 
-        {draggedNode &&
-          JSON.stringify(draggedNode.path) === JSON.stringify(nodePath) && (
-            <span className="text-xs bg-blue-200 text-blue-800 px-2 py-0.5 rounded ml-auto">
-              Dragging
-            </span>
-          )}
-
-        {isSelected && (
+        {isDragging ? (
+          <span className="text-xs font-medium text-green-600 ml-auto px-2 py-1  rounded animate-pulse">
+            Dragging...
+          </span>
+        ) : isSelected ? (
           <NodeActions
             isObject={isObj}
             onAdd={() => onAdd(nodePath)}
             onEdit={() => onEdit(nodePath)}
             onDelete={() => onDelete(nodePath)}
           />
-        )}
+        ) : null}
       </div>
 
       {isExpanded && hasChildren && (
@@ -96,6 +95,7 @@ export default function TreeNode({
               onDragOver={onDragOver}
               onDrop={onDrop}
               draggedNode={draggedNode}
+              onDragEnd={onDragEnd}
             />
           ))}
         </div>
