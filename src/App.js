@@ -9,10 +9,11 @@ import {
   updateNodeAtPath,
 } from "./utils/treeUtils";
 import DynamicModal from "./components/modal/DinamicModal";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 export default function App() {
   const [showModal, setShowModal] = useState(false);
-  const [importedJson, setImportedJson] = useState({});
+  const [importedJson, setImportedJson] = useLocalStorage("importedJson", {});
   const [expandedNodes, setExpandedNodes] = useState(new Set());
   const [selectedPath, setSelectedPath] = useState([]);
   const [actionType, setActionType] = useState("");
