@@ -11,6 +11,7 @@ export default function TreeNode({
   expandedNodes,
   onToggleExpand,
   onAdd,
+  onEdit,
   onDelete,
 }) {
   const isObj = isObject(value);
@@ -51,8 +52,9 @@ export default function TreeNode({
         {isSelected && (
           <NodeActions
             isObject={isObj}
-            onDelete={() => onDelete(nodePath)}
             onAdd={() => onAdd(nodePath)}
+            onEdit={() => onEdit(nodePath)}
+            onDelete={() => onDelete(nodePath)}
           />
         )}
       </div>
@@ -70,6 +72,7 @@ export default function TreeNode({
               expandedNodes={expandedNodes}
               onToggleExpand={onToggleExpand}
               onAdd={onAdd}
+              onEdit={onEdit}
               onDelete={onDelete}
             />
           ))}

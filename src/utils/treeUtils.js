@@ -35,3 +35,14 @@ export const removeNodeAtPath = (obj, path) => {
 
   return setValueAtPath(obj, parentPath, newParentNode);
 };
+
+export const updateNodeAtPath = (obj, path, newKey, newValue) => {
+  const parentPath = path.slice(0, -1);
+  const oldKey = path[path.length - 1];
+  const parentNode = getValueAtPath(obj, parentPath);
+  if (!isObject(parentNode)) return obj;
+  const updatedNode = { ...parentNode };
+  if (oldKey !== newKey) delete updatedNode[oldKey];
+  updatedNode[newKey] = newValue;
+  return setValueAtPath(obj, parentPath, updatedNode);
+};

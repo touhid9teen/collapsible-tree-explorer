@@ -6,6 +6,7 @@ import {
   addNodeAtPath,
   getValueAtPath,
   removeNodeAtPath,
+  updateNodeAtPath,
 } from "./utils/treeUtils";
 import DynamicModal from "./components/modal/DinamicModal";
 
@@ -15,8 +16,6 @@ export default function App() {
   const [expandedNodes, setExpandedNodes] = useState(new Set());
   const [selectedPath, setSelectedPath] = useState([]);
   const [actionType, setActionType] = useState("");
-
-  console.log("Imported JSON:", importedJson);
 
   const toggleExpand = (nodePath) => {
     const pathStr = nodePath.join(">");
@@ -34,16 +33,20 @@ export default function App() {
   const handleImport = (value) => {
     setSelectedPath([]);
     setImportedJson(value);
-    setShowModal(false);
   };
 
   const handleAdd = (key, value) => {
     setImportedJson(addNodeAtPath(importedJson, selectedPath, key, value));
+    setSelectedPath([...selectedPath, key]);
   };
 
-  const handleUpdate = (nodePath, newValue) => {
-    console.log(nodePath, newValue);
-    setShowModal(false);
+  const handleUpdate = (nodePath, newKey, newValue) => {
+    const oldKey = nodePath[nodePath.length - 1];
+    setImportedJson(updateNodeAtPath(importedJson, nodePath, newKey, newValue));
+    if (newKey !== oldKey) {
+      const newPath = [...nodePath.slice(0, -1), newKey];
+      setSelectedPath(newPath);
+    }
   };
 
   const handleDelete = (nodePath) => {
@@ -52,7 +55,9 @@ export default function App() {
       return;
     }
     setImportedJson(removeNodeAtPath(importedJson, nodePath));
+    setSelectedPath(nodePath.slice(0, -1));
   };
+
   const currentValue =
     selectedPath.length === 0
       ? importedJson
@@ -80,6 +85,7 @@ export default function App() {
               expandedNodes={expandedNodes}
               onToggleExpand={toggleExpand}
               onAdd={() => openModal("add")}
+              onEdit={() => openModal("update")}
               onDelete={() => openModal("delete")}
             />
           </div>
@@ -97,7 +103,7 @@ export default function App() {
         onSubmit={(key, value) => {
           if (actionType === "import") handleImport(value);
           if (actionType === "add") handleAdd(key, value);
-          if (actionType === "update") handleUpdate(selectedPath, value);
+          if (actionType === "update") handleUpdate(selectedPath, key, value);
           if (actionType === "delete") handleDelete(selectedPath);
         }}
         initialKey={""}
