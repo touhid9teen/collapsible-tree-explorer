@@ -3,6 +3,7 @@ import TreeNode from "./TreeNode";
 export default function Tree({
   data,
   onSelect,
+  selectedPath,
   expendedNodes,
   onToggleExpand,
 }) {
@@ -19,6 +20,7 @@ export default function Tree({
           path={[]}
           expendedNodes={expendedNodes}
           onToggleExpand={onToggleExpand}
+          selectedPath={selectedPath}
         />
       ))}
     </div>

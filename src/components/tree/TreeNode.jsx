@@ -1,24 +1,29 @@
 import { ChevronDown } from "lucide-react";
 import { isObject } from "../../utils/treeUtils";
+import { NodeActions } from "../NodeActions/NodeActions";
 
 export default function TreeNode({
   nodeKey,
   value,
   path,
   onSelect,
+  selectedPath,
   expendedNodes,
   onToggleExpand,
 }) {
   const isObj = isObject(value);
   const nodePath = [...path, nodeKey];
   const pathStr = nodePath.join(">");
+  const isSelected = JSON.stringify(nodePath) === JSON.stringify(selectedPath);
   const isExpanded = expendedNodes.has(pathStr);
   const hasChildren = isObj && Object.keys(value).length > 0;
 
   return (
-    <div className="select-none ml-2">
+    <div className="select-none">
       <div
-        className="flex items-start gap-2 px-2 py-1 rounded cursor-pointer hover:bg-gray-200 transition"
+        className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer hover:bg-gray-100 transition-colors duration-150 ${
+          isSelected ? "bg-blue-100 border-l-2 border-blue-500" : ""
+        }`}
         onClick={() => onSelect(nodePath)}
       >
         {hasChildren ? (
@@ -40,6 +45,8 @@ export default function TreeNode({
         )}
 
         <span className="text-sm font-semibold text-gray-900">{nodeKey}</span>
+
+        {isSelected && <NodeActions isObject={isObj} />}
       </div>
 
       {isExpanded && hasChildren && (
@@ -51,6 +58,7 @@ export default function TreeNode({
               value={childValue}
               path={nodePath}
               onSelect={onSelect}
+              selectedPath={selectedPath}
               expendedNodes={expendedNodes}
               onToggleExpand={onToggleExpand}
             />
