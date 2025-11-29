@@ -13,6 +13,10 @@ export default function TreeNode({
   onAdd,
   onEdit,
   onDelete,
+  onDragStart,
+  onDragOver,
+  onDrop,
+  draggedNode,
 }) {
   const isObj = isObject(value);
   const nodePath = [...path, nodeKey];
@@ -20,13 +24,20 @@ export default function TreeNode({
   const isSelected = JSON.stringify(nodePath) === JSON.stringify(selectedPath);
   const isExpanded = expandedNodes.has(pathStr);
   const hasChildren = isObj && Object.keys(value).length > 0;
+  const isDraggedOver =
+    draggedNode &&
+    JSON.stringify(draggedNode.path) === JSON.stringify(nodePath);
 
   return (
     <div className="select-none w-full">
       <div
         className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer hover:bg-gray-100 transition-colors duration-150 ${
           isSelected ? "bg-blue-100 border-l-2 border-blue-500" : ""
-        }`}
+        } `}
+        draggable={true}
+        onDragStart={(e) => onDragStart(e, nodePath, nodeKey)}
+        onDragOver={(e) => onDragOver(e, nodePath, isObj)}
+        onDrop={(e) => onDrop(e, nodePath)}
         onClick={() => onSelect(nodePath)}
       >
         {hasChildren ? (
@@ -48,6 +59,13 @@ export default function TreeNode({
         )}
 
         <span className="text-sm font-semibold text-gray-900">{nodeKey}</span>
+
+        {draggedNode &&
+          JSON.stringify(draggedNode.path) === JSON.stringify(nodePath) && (
+            <span className="text-xs bg-blue-200 text-blue-800 px-2 py-0.5 rounded ml-auto">
+              Dragging
+            </span>
+          )}
 
         {isSelected && (
           <NodeActions
@@ -74,6 +92,10 @@ export default function TreeNode({
               onAdd={onAdd}
               onEdit={onEdit}
               onDelete={onDelete}
+              onDragStart={onDragStart}
+              onDragOver={onDragOver}
+              onDrop={onDrop}
+              draggedNode={draggedNode}
             />
           ))}
         </div>

@@ -5,6 +5,8 @@ import Tree from "./components/tree/Tree";
 import {
   addNodeAtPath,
   getValueAtPath,
+  isObject,
+  moveNodeAtPath,
   removeNodeAtPath,
   updateNodeAtPath,
 } from "./utils/treeUtils";
@@ -16,6 +18,7 @@ export default function App() {
   const [importedJson, setImportedJson] = useLocalStorage("importedJson", {});
   const [expandedNodes, setExpandedNodes] = useState(new Set());
   const [selectedPath, setSelectedPath] = useState([]);
+  const [draggedNode, setDraggedNode] = useState(null);
   const [actionType, setActionType] = useState("");
 
   const toggleExpand = (nodePath) => {
@@ -70,6 +73,52 @@ export default function App() {
     setSelectedPath(nodePath.slice(0, -1));
   };
 
+  const handleDragStart = (e, sourcePath, nodeKey) => {
+    setDraggedNode({ path: sourcePath, key: nodeKey });
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleDragOver = (e, targetPath, isObject) => {
+    if (!isObject) {
+      e.dataTransfer.dropEffect = "none";
+      return;
+    }
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  };
+
+  const handleDrop = (e, targetPath) => {
+    e.preventDefault();
+
+    if (!draggedNode) return;
+    const draggedPathStr = draggedNode.path.join(">");
+    const targetPathStr = targetPath.join(">");
+
+    if (
+      draggedPathStr === targetPathStr ||
+      targetPathStr.startsWith(draggedPathStr + ">")
+    ) {
+      setDraggedNode(null);
+      return;
+    }
+
+    const targetNode = getValueAtPath(importedJson, targetPath);
+    if (!isObject(targetNode)) {
+      setDraggedNode(null);
+      return;
+    }
+
+    const newJson = moveNodeAtPath(
+      importedJson,
+      draggedNode.path,
+      targetPath,
+      draggedNode.key
+    );
+
+    setImportedJson(newJson);
+    setSelectedPath([...targetPath, draggedNode.key]);
+    setDraggedNode(null);
+  };
   const selectedKey =
     selectedPath.length > 0 ? selectedPath[selectedPath.length - 1] : "";
 
@@ -102,6 +151,10 @@ export default function App() {
               onAdd={() => openModal("add")}
               onEdit={() => openModal("update")}
               onDelete={() => openModal("delete")}
+              draggedNode={draggedNode}
+              onDragStart={handleDragStart}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
             />
           </div>
         </div>

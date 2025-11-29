@@ -9,6 +9,10 @@ export default function Tree({
   onAdd,
   onEdit,
   onDelete,
+  draggedNode,
+  onDragStart,
+  onDragOver,
+  onDrop,
 }) {
   if (!data || typeof data !== "object") return <p>No JSON Loaded</p>;
 
@@ -27,6 +31,10 @@ export default function Tree({
           onAdd={onAdd}
           onEdit={onEdit}
           onDelete={onDelete}
+          onDragStart={onDragStart}
+          onDragOver={onDragOver}
+          onDrop={onDrop}
+          draggedNode={draggedNode}
         />
       ))}
     </div>

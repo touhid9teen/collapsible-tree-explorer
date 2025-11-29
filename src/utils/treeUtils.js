@@ -58,3 +58,17 @@ export const updateNodeAtPath = (obj, path, newKey, newValue) => {
     ? updatedNode
     : setValueAtPath(obj, parentPath, updatedNode);
 };
+
+export const moveNodeAtPath = (obj, sourcePath, targetPath, newKey) => {
+  const sourceValue = getValueAtPath(obj, sourcePath);
+
+  // Remove from source
+  let updated = removeNodeAtPath(obj, sourcePath);
+
+  // Add to target with new key
+  const targetNode = getValueAtPath(updated, targetPath);
+  if (!isObject(targetNode)) return obj;
+
+  const newTargetNode = { ...targetNode, [newKey]: sourceValue };
+  return setValueAtPath(updated, targetPath, newTargetNode);
+};
