@@ -6,6 +6,7 @@ export default function Tree({
   selectedPath,
   expendedNodes,
   onToggleExpand,
+  onDelete,
 }) {
   if (!data || typeof data !== "object") return <p>No JSON Loaded</p>;
 
@@ -21,6 +22,7 @@ export default function Tree({
           expendedNodes={expendedNodes}
           onToggleExpand={onToggleExpand}
           selectedPath={selectedPath}
+          onDelete={onDelete}
         />
       ))}
     </div>

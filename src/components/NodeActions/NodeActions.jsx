@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Trash2, Plus, Edit2, MoreVertical } from "lucide-react";
 import { IconButton } from "./IconButton";
 
-export const NodeActions = ({ isObject }) => {
+export const NodeActions = ({ isObject, onDelete }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -24,7 +24,12 @@ export const NodeActions = ({ isObject }) => {
           {isObject && (
             <IconButton icon={Plus} title="Add child" variant="add" />
           )}
-          <IconButton icon={Trash2} title="Delete" variant="delete" />
+          <IconButton
+            onClick={onDelete}
+            icon={Trash2}
+            title="Delete"
+            variant="delete"
+          />
         </div>
       )}
     </div>

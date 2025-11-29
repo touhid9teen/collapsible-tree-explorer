@@ -3,13 +3,14 @@ import Button from "./components/Button";
 import ImportModal from "./components/modal/ImportModal";
 import Viewport from "./components/viewport/Viewport";
 import Tree from "./components/tree/Tree";
-import { getValueAtPath } from "./utils/treeUtils";
+import { getValueAtPath, removeNodeAtPath } from "./utils/treeUtils";
 
 export default function App() {
   const [showModal, setShowModal] = useState(false);
   const [importedJson, setImportedJson] = useState({});
   const [expandedNodes, setExpandedNodes] = useState(new Set());
   const [selectedPath, setSelectedPath] = useState([]);
+
   const toggleExpand = (nodePath) => {
     const pathStr = nodePath.join(">");
     setExpandedNodes((prev) => {
@@ -25,6 +26,13 @@ export default function App() {
     setImportedJson(value);
   };
 
+  const handleDelete = (nodePath) => {
+    if (nodePath.length <= 1) {
+      alert("CANNOT DELETE ROOT NODE");
+      return;
+    }
+    setImportedJson(removeNodeAtPath(importedJson, nodePath));
+  };
   const currentValue =
     selectedPath.length === 0
       ? importedJson
@@ -45,6 +53,7 @@ export default function App() {
               onSelect={setSelectedPath}
               expendedNodes={expandedNodes}
               onToggleExpand={toggleExpand}
+              onDelete={handleDelete}
             />
           </div>
         </div>
