@@ -17,6 +17,14 @@ const setValueAtPath = (obj, path, newValue) => {
   return copy;
 };
 
+export const addNodeAtPath = (obj, path, newKey, newValue) => {
+  const target = getValueAtPath(obj, path);
+  if (!isObject(target)) return obj;
+
+  const newTarget = { ...target, [newKey]: newValue };
+  return setValueAtPath(obj, path, newTarget);
+};
+
 export const removeNodeAtPath = (obj, path) => {
   const parentPath = path.slice(0, -1);
   const keyToDelete = path[path.length - 1];

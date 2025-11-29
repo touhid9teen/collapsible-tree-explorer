@@ -1,15 +1,22 @@
 import { useState } from "react";
 import Button from "./components/Button";
-import ImportModal from "./components/modal/ImportModal";
 import Viewport from "./components/viewport/Viewport";
 import Tree from "./components/tree/Tree";
-import { getValueAtPath, removeNodeAtPath } from "./utils/treeUtils";
+import {
+  addNodeAtPath,
+  getValueAtPath,
+  removeNodeAtPath,
+} from "./utils/treeUtils";
+import DynamicModal from "./components/modal/DinamicModal";
 
 export default function App() {
   const [showModal, setShowModal] = useState(false);
   const [importedJson, setImportedJson] = useState({});
   const [expandedNodes, setExpandedNodes] = useState(new Set());
   const [selectedPath, setSelectedPath] = useState([]);
+  const [actionType, setActionType] = useState("");
+
+  console.log("Imported JSON:", importedJson);
 
   const toggleExpand = (nodePath) => {
     const pathStr = nodePath.join(">");
@@ -19,11 +26,24 @@ export default function App() {
       return newSet;
     });
   };
+  const openModal = (type) => {
+    setActionType(type);
+    setShowModal(true);
+  };
 
   const handleImport = (value) => {
-    setShowModal(false);
     setSelectedPath([]);
     setImportedJson(value);
+    setShowModal(false);
+  };
+
+  const handleAdd = (key, value) => {
+    setImportedJson(addNodeAtPath(importedJson, selectedPath, key, value));
+  };
+
+  const handleUpdate = (nodePath, newValue) => {
+    console.log(nodePath, newValue);
+    setShowModal(false);
   };
 
   const handleDelete = (nodePath) => {
@@ -43,7 +63,13 @@ export default function App() {
       <div className="flex flex-col md:flex-row gap-6 h-full">
         <div className="w-full md:w-1/2 bg-white rounded-xl shadow-md border p-6 flex flex-col ">
           <div>
-            <Button onClick={() => setShowModal(true)}>Import JSON</Button>
+            <Button
+              onClick={() => {
+                openModal("import");
+              }}
+            >
+              Import JSON
+            </Button>
           </div>
 
           <div className="flex-1 mt-4 overflow-auto rounded border bg-gray-50 p-4">
@@ -51,9 +77,10 @@ export default function App() {
               data={importedJson}
               selectedPath={selectedPath}
               onSelect={setSelectedPath}
-              expendedNodes={expandedNodes}
+              expandedNodes={expandedNodes}
               onToggleExpand={toggleExpand}
-              onDelete={handleDelete}
+              onAdd={() => openModal("add")}
+              onDelete={() => openModal("delete")}
             />
           </div>
         </div>
@@ -63,10 +90,21 @@ export default function App() {
         </div>
       </div>
 
-      <ImportModal
+      <DynamicModal
+        type={actionType}
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        onImport={handleImport}
+        onSubmit={(key, value) => {
+          if (actionType === "import") handleImport(value);
+          if (actionType === "add") handleAdd(key, value);
+          if (actionType === "update") handleUpdate(selectedPath, value);
+          if (actionType === "delete") handleDelete(selectedPath);
+        }}
+        initialKey={""}
+        initialValue={""}
+        nodeKey={
+          selectedPath.length > 0 ? selectedPath[selectedPath.length - 1] : ""
+        }
       />
     </div>
   );

@@ -8,15 +8,16 @@ export default function TreeNode({
   path,
   onSelect,
   selectedPath,
-  expendedNodes,
+  expandedNodes,
   onToggleExpand,
+  onAdd,
   onDelete,
 }) {
   const isObj = isObject(value);
   const nodePath = [...path, nodeKey];
   const pathStr = nodePath.join(">");
   const isSelected = JSON.stringify(nodePath) === JSON.stringify(selectedPath);
-  const isExpanded = expendedNodes.has(pathStr);
+  const isExpanded = expandedNodes.has(pathStr);
   const hasChildren = isObj && Object.keys(value).length > 0;
 
   return (
@@ -48,7 +49,11 @@ export default function TreeNode({
         <span className="text-sm font-semibold text-gray-900">{nodeKey}</span>
 
         {isSelected && (
-          <NodeActions isObject={isObj} onDelete={() => onDelete(nodePath)} />
+          <NodeActions
+            isObject={isObj}
+            onDelete={() => onDelete(nodePath)}
+            onAdd={() => onAdd(nodePath)}
+          />
         )}
       </div>
 
@@ -62,8 +67,9 @@ export default function TreeNode({
               path={nodePath}
               onSelect={onSelect}
               selectedPath={selectedPath}
-              expendedNodes={expendedNodes}
+              expandedNodes={expandedNodes}
               onToggleExpand={onToggleExpand}
+              onAdd={onAdd}
               onDelete={onDelete}
             />
           ))}
