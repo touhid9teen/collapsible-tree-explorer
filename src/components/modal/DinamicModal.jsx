@@ -7,16 +7,20 @@ export default function DynamicModal({
   isOpen,
   onClose,
   onSubmit,
-  initialKey = "",
-  initialValue = "",
+  initialKey,
+  initialValue,
   nodeKey = "",
 }) {
   const [keyInput, setKeyInput] = useState(initialKey);
   const [valueInput, setValueInput] = useState(initialValue);
+  const [hasChildren, setHasChildren] = useState(false);
 
   useEffect(() => {
     setKeyInput(initialKey);
     setValueInput(initialValue);
+
+    const isParentNode = initialValue && typeof initialValue === "object";
+    setHasChildren(isParentNode);
   }, [initialKey, initialValue, type, isOpen]);
 
   const handleSubmit = () => {
@@ -97,15 +101,17 @@ export default function DynamicModal({
                 type === "add" ? "Enter key" : `Update key "${nodeKey}"`
               }
             />
-            <input
-              type="text"
-              value={valueInput}
-              onChange={(e) => setValueInput(e.target.value)}
-              className="
+            {!hasChildren && (
+              <input
+                type="text"
+                value={valueInput}
+                onChange={(e) => setValueInput(e.target.value)}
+                className="
                 w-full p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors
               "
-              placeholder="Enter value"
-            />
+                placeholder="Enter value"
+              />
+            )}
           </>
         )}
 

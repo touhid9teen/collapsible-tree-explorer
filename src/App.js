@@ -42,10 +42,21 @@ export default function App() {
 
   const handleUpdate = (nodePath, newKey, newValue) => {
     const oldKey = nodePath[nodePath.length - 1];
-    setImportedJson(updateNodeAtPath(importedJson, nodePath, newKey, newValue));
+    const currentNode = getValueAtPath(importedJson, nodePath);
+    const isParent = typeof currentNode === "object" && currentNode !== null;
+
+    const valueToSet = isParent ? currentNode : newValue;
+
+    const updatedJson = updateNodeAtPath(
+      importedJson,
+      nodePath,
+      newKey,
+      valueToSet
+    );
+    setImportedJson(updatedJson);
+
     if (newKey !== oldKey) {
-      const newPath = [...nodePath.slice(0, -1), newKey];
-      setSelectedPath(newPath);
+      setSelectedPath([...nodePath.slice(0, -1), newKey]);
     }
   };
 
@@ -57,6 +68,9 @@ export default function App() {
     setImportedJson(removeNodeAtPath(importedJson, nodePath));
     setSelectedPath(nodePath.slice(0, -1));
   };
+
+  const selectedKey =
+    selectedPath.length > 0 ? selectedPath[selectedPath.length - 1] : "";
 
   const currentValue =
     selectedPath.length === 0
@@ -106,8 +120,8 @@ export default function App() {
           if (actionType === "update") handleUpdate(selectedPath, key, value);
           if (actionType === "delete") handleDelete(selectedPath);
         }}
-        initialKey={""}
-        initialValue={""}
+        initialKey={actionType === "update" ? selectedKey : ""}
+        initialValue={actionType === "update" ? currentValue : ""}
         nodeKey={
           selectedPath.length > 0 ? selectedPath[selectedPath.length - 1] : ""
         }
