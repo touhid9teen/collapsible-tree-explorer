@@ -1,70 +1,205 @@
-# Getting Started with Create React App
+# Collapsible Tree Explorer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, interactive React-based tree visualization component that enables users to explore hierarchical data structures with smooth animations and intuitive navigation controls.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Collapsible Tree Explorer](#collapsible-tree-explorer)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Project Structure](#project-structure)
+    - [Directory Descriptions](#directory-descriptions)
+  - [Framework \& Why](#framework--why)
+  - [How to Run the Project](#how-to-run-the-project)
+    - [Quick Start](#quick-start)
+  - [Bonus Features](#bonus-features)
+  - [Live Demo](#live-demo)
+  - [Setup Instructions (Docker)](#setup-instructions-docker)
+  - [Technologies](#technologies)
+  - [License](#license)
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Interactive Tree Visualization**: Explore hierarchical data with an intuitive, collapsible tree interface
+- **Dynamic Node Management**: Add, edit, delete, and manage tree nodes dynamically
+- **Modal Dialogs**: Dynamic modals for enhanced user interactions
+- **JSON Preview**: Real-time JSON data preview of selected nodes
+- **Breadcrumb Navigation**: Easy navigation through tree hierarchy
+- **Node Actions**: Context-aware actions for tree manipulation
+- **Local Storage Support**: Persistent data storage using browser local storage
+- **Responsive Viewport**: Dedicated viewport for data display and exploration
+- **Smooth Animations**: Elegant transitions and animations for expanding/collapsing nodes
+- **Responsive Design**: Fully responsive layout using Tailwind CSS
+- **Accessibility**: Built with accessibility best practices
+- **Container Ready**: Includes Docker configuration for easy deployment
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Project Structure
 
-### `npm test`
+```
+collapsible-tree-explorer/
+├── node_modules/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── modal/
+│   │   │   └── DynamicModal.jsx
+│   │   ├── NodeActions/
+│   │   │   ├── IconButton.jsx
+│   │   │   └── NodeActions.jsx
+│   │   ├── tree/
+│   │   │   ├── Tree.jsx
+│   │   │   └── TreeNode.jsx
+│   │   ├── viewport/
+│   │   │   ├── Breadcrumb.jsx
+│   │   │   ├── JSONPreview.jsx
+│   │   │   └── Viewport.jsx
+│   │   ├── Button.jsx
+│   │   └── Toolbar.jsx
+│   ├── hooks/
+│   │   └── useLocalStorage.js
+│   ├── utils/
+│   │   └── treeUtils.js
+│   ├── App.css
+│   ├── App.js
+│   ├── index.css
+│   ├── index.js
+│   └── reportWebVitals.js
+├── .dockerignore
+├── .gitignore
+├── docker-compose.yml
+├── Dockerfile
+├── package-lock.json
+├── package.json
+├── postcsss.config.js
+├── README.md
+└── tailwind.config.js
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Directory Descriptions
 
-### `npm run build`
+- **components/**: Reusable React components organized by feature
+  - **modal/**: Modal dialogs for dynamic operations
+  - **NodeActions/**: Components for tree node actions and interactions
+  - **tree/**: Core tree visualization components
+  - **viewport/**: Data display and navigation components
+- **hooks/**: Custom React hooks for state management
+- **utils/**: Utility functions for tree operations and helpers
+- **public/**: Static assets and HTML template
+- **src/**: Main source code directory
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Framework & Why
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**React 18** was chosen as the primary framework for this project because:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Component-Based Architecture**: React's component model allows for reusable, modular code that makes the tree explorer scalable and maintainable
+- **Virtual DOM**: React's virtual DOM ensures efficient rendering and smooth animations when expanding/collapsing tree nodes
+- **State Management**: Built-in hooks like `useState` and custom hooks simplify state management for tree navigation and local storage
+- **Ecosystem**: Rich ecosystem with Tailwind CSS for styling and excellent developer tools for debugging
+- **Performance**: React's optimization techniques handle large hierarchical datasets efficiently
+- **Community Support**: Extensive documentation and community support make development faster and more reliable
 
-### `npm run eject`
+## How to Run the Project
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Quick Start
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Clone the repository and navigate to the project directory
+2. Install dependencies with `npm install`
+3. Run the development server with `npm start`
+4. Open `http://localhost:3000` in your browser
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+For detailed instructions, see [Setup Instructions (Manual)](#setup-instructions-manual) and [Setup Instructions (Docker)](#setup-instructions-docker) sections below.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Bonus Features
 
-## Learn More
+- **JSON Preview**: Real-time JSON data preview of selected nodes in the viewport
+- **Local Storage Integration**: Automatic saving and loading of tree data using browser's local storage API
+- **Breadcrumb Navigation**: Interactive breadcrumb trail for easy navigation through the tree hierarchy
+- **Dynamic Modal System**: Flexible modal component for dynamic user interactions
+- **Responsive Viewport**: Dedicated data display area with JSONPreview and navigation controls
+- **Docker Support**: Full Docker and Docker Compose configuration for containerized development and deployment
+- **Tailwind CSS**: Modern, utility-first CSS framework for responsive and professional UI design
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Live Demo
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Visit the live demo hosted on Vercel:
 
-### Code Splitting
+[https://collapsible-tree-explorer.vercel.app](https://collapsible-tree-explorer.vercel.app)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+- 🔖 Clone the repository:
+```bash
+git clone https://github.com/yourusername/collapsible-tree-explorer.git
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- 🔖 Go to the project directory:
+```bash
+cd collapsible-tree-explorer
+```
 
-### Making a Progressive Web App
+- 🔖 Install required packages:
+```bash
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- 🔖 Run the development server:
+```bash
+npm start
+```
 
-### Advanced Configuration
+The application will automatically open in your default browser at `http://localhost:3000`. Any changes you make to the code will automatically refresh the page.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- 🔖 Available scripts:
+  - `npm start` - Runs the development server
+  - `npm run build` - Creates a production-ready build
+  - `npm test` - Runs the test suite (if configured)
+  - `npm run eject` - Ejects from Create React App (one-way operation)
 
-### Deployment
+- 🔖 Building for production:
+```bash
+npm run build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+This creates an optimized production build in the `build/` directory with minified JavaScript and CSS, code splitting, and optimized assets.
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Setup Instructions (Docker)
+
+- 🔖 Build and run Docker images:
+```bash
+docker-compose up --build
+```
+
+- 🔖 Run the Docker container using docker-compose:
+```bash
+docker-compose up
+```
+
+- 🔖 Stop Docker when finished:
+```bash
+docker-compose down
+```
+
+- 🔖 Docker is running properly! Access the application at `http://localhost:3000`
+
+## Technologies
+
+This project is built with the following technologies:
+
+- **React 18**: Modern UI library for building interactive components
+- **Tailwind CSS**: Utility-first CSS framework for responsive design
+- **Node.js**: JavaScript runtime for development tools
+- **npm**: Package manager
+- **Docker**: Containerization platform for development and deployment
+- **Local Storage API**: Browser API for persistent data storage
+- **PostCSS**: CSS processing tool for Tailwind integration
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+**Version**: 1.0.0  
+**Last Updated**: November 2025
