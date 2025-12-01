@@ -134,7 +134,7 @@ export default function App() {
     <div className="min-h-screen w-full bg-gray-100 p-6 md:p-10">
       <div className="mb-4 bg-white rounded-xl shadow-sm border p-4">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 leading-tight">
+          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-500 leading-tight">
             JSON Tree
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-gray-600 mt-2">
