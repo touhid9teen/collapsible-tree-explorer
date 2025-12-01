@@ -132,6 +132,17 @@ export default function App() {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 p-6 md:p-10">
+      <div className="mb-4 bg-white rounded-xl shadow-sm border p-4">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 leading-tight">
+            JSON Tree
+          </h1>
+          <p className="text-xs sm:text-sm md:text-base text-gray-600 mt-2">
+            Explore & Manage Hierarchical Data
+          </p>
+        </div>
+      </div>
+
       <div className="flex flex-col md:flex-row gap-6 h-full">
         <div className="w-full md:w-1/2 bg-white rounded-xl shadow-md border p-6 flex flex-col ">
           <div>
