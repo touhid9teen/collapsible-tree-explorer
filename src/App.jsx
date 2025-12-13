@@ -18,7 +18,10 @@ export default function App() {
   const [importedJson, setImportedJson] = useLocalStorage("importedJson", {});
   const [expandedNodes, setExpandedNodes] = useState(new Set());
   const [selectedPath, setSelectedPath] = useState([]);
-  const [disableNodePath, setDisableNodePath] = useState(new Map());
+  const [disableNodePath, setDisableNodePath] = useLocalStorage(
+    "disableNodePath",
+    {}
+  );
   const [draggedNode, setDraggedNode] = useState(null);
   const [actionType, setActionType] = useState("");
 
@@ -66,8 +69,7 @@ export default function App() {
   };
 
   const handleDelete = (nodePath) => {
-    const isDisable = disableNodePath.get(nodePath);
-
+    const isDisable = disableNodePath[nodePath];
     if (isDisable) {
       alert("THIS NODE IS DISABLED AND CANNOT BE DELETED");
       return;
@@ -81,11 +83,14 @@ export default function App() {
   };
 
   const handleDisable = (nodePath) => {
-    setDisableNodePath((prev) => {
-      const newMap = new Map(prev);
-      newMap.set(nodePath, true);
-      return newMap;
-    });
+    if (disableNodePath[nodePath]) {
+      alert("THIS NODE IS ALREADY DISABLED");
+      return;
+    }
+    setDisableNodePath((prev) => ({
+      ...prev,
+      [nodePath]: true,
+    }));
   };
 
   const handleDragStart = (e, sourcePath, nodeKey) => {
