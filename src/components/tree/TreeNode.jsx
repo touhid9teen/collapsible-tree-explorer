@@ -18,6 +18,7 @@ export default function TreeNode({
   onDrop,
   draggedNode,
   onDragEnd,
+  onDisable,
 }) {
   const isObj = isObject(value);
   const nodePath = [...path, nodeKey];
@@ -72,6 +73,7 @@ export default function TreeNode({
             onAdd={() => onAdd(nodePath)}
             onEdit={() => onEdit(nodePath)}
             onDelete={() => onDelete(nodePath)}
+            onDisable={() => onDisable(nodePath)}
           />
         ) : null}
       </div>
@@ -96,6 +98,7 @@ export default function TreeNode({
               onDrop={onDrop}
               draggedNode={draggedNode}
               onDragEnd={onDragEnd}
+              onDisable={onDisable}
             />
           ))}
         </div>

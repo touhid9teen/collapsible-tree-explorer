@@ -40,7 +40,7 @@ export default function DynamicModal({
       setKeyInput("");
       setValueInput("");
       onClose();
-    } else if (type === "delete") {
+    } else if (type === "delete" || type === "disable") {
       onSubmit();
       onClose();
     }
@@ -53,6 +53,7 @@ export default function DynamicModal({
     add: "Add New Node",
     update: "Update Node",
     delete: "Confirm Delete",
+    disable: "Confirm Disable",
   };
 
   return (
@@ -115,8 +116,10 @@ export default function DynamicModal({
           </>
         )}
 
-        {type === "delete" && (
-          <p>Are you sure you want to delete the node "{nodeKey}"?</p>
+        {(type === "delete" || type === "disable") && (
+          <p>
+            Are you sure you want to "{type}" the node "{nodeKey}"?
+          </p>
         )}
 
         <div className="flex gap-2 justify-end">
@@ -124,7 +127,11 @@ export default function DynamicModal({
             Cancel
           </Button>
           <Button onClick={handleSubmit} variant="primary">
-            {type === "delete" ? "Delete" : "Submit"}
+            {type === "delete"
+              ? "Delete"
+              : type === "disable"
+              ? "Disable"
+              : "Submit"}
           </Button>
         </div>
       </div>

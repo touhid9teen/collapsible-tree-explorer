@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { act, useState } from "react";
 import Button from "./components/Button";
 import Viewport from "./components/viewport/Viewport";
 import Tree from "./components/tree/Tree";
@@ -18,6 +18,7 @@ export default function App() {
   const [importedJson, setImportedJson] = useLocalStorage("importedJson", {});
   const [expandedNodes, setExpandedNodes] = useState(new Set());
   const [selectedPath, setSelectedPath] = useState([]);
+  const [disableNodePath, setDisableNodePath] = useState(new Map());
   const [draggedNode, setDraggedNode] = useState(null);
   const [actionType, setActionType] = useState("");
 
@@ -65,12 +66,26 @@ export default function App() {
   };
 
   const handleDelete = (nodePath) => {
+    const isDisable = disableNodePath.get(nodePath);
+
+    if (isDisable) {
+      alert("THIS NODE IS DISABLED AND CANNOT BE DELETED");
+      return;
+    }
     if (nodePath.length <= 1) {
       alert("CANNOT DELETE ROOT NODE");
       return;
     }
     setImportedJson(removeNodeAtPath(importedJson, nodePath));
     setSelectedPath(nodePath.slice(0, -1));
+  };
+
+  const handleDisable = (nodePath) => {
+    setDisableNodePath((prev) => {
+      const newMap = new Map(prev);
+      newMap.set(nodePath, true);
+      return newMap;
+    });
   };
 
   const handleDragStart = (e, sourcePath, nodeKey) => {
@@ -170,6 +185,7 @@ export default function App() {
               onDragOver={handleDragOver}
               onDragEnd={handleDragEnd}
               onDrop={handleDrop}
+              onDisable={() => openModal("disable")}
             />
           </div>
         </div>
@@ -188,6 +204,7 @@ export default function App() {
           if (actionType === "add") handleAdd(key, value);
           if (actionType === "update") handleUpdate(selectedPath, key, value);
           if (actionType === "delete") handleDelete(selectedPath);
+          if (actionType === "disable") handleDisable(selectedPath);
         }}
         initialKey={actionType === "update" ? selectedKey : ""}
         initialValue={actionType === "update" ? currentValue : ""}
