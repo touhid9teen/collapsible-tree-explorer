@@ -15,6 +15,7 @@ export default function Tree({
   onDrop,
   onDragEnd,
   onDisable,
+  disabledNodes = {},
 }) {
   if (!data || typeof data !== "object") return <p>No JSON Loaded</p>;
 
@@ -39,6 +40,7 @@ export default function Tree({
           draggedNode={draggedNode}
           onDragEnd={onDragEnd}
           onDisable={onDisable}
+          disabledNodes={disabledNodes}
         />
       ))}
     </div>

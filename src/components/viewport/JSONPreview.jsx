@@ -1,9 +1,14 @@
-import { Code2, Copy } from "lucide-react";
+import { Code2, Copy, Check } from "lucide-react";
+import { useState } from "react";
 import Button from "../Button";
 
 export const JSONPreview = ({ title, value }) => {
+  const [isCopied, setIsCopied] = useState(false);
+
   const handleCopy = () => {
     navigator.clipboard.writeText(JSON.stringify(value, null, 2));
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   };
 
   return (
@@ -15,10 +20,14 @@ export const JSONPreview = ({ title, value }) => {
         </div>
         <button 
           onClick={handleCopy}
-          className="text-slate-400 hover:text-white transition-colors p-1 rounded hover:bg-slate-700"
-          title="Copy to clipboard"
+          className={`
+            transition-all duration-200 p-1.5 rounded-md flex items-center gap-1.5
+            ${isCopied ? "bg-emerald-500/10 text-emerald-400" : "text-slate-400 hover:text-white hover:bg-slate-700"}
+          `}
+          title={isCopied ? "Copied!" : "Copy to clipboard"}
         >
-          <Copy size={14} />
+          {isCopied ? <Check size={14} /> : <Copy size={14} />}
+          {isCopied && <span className="text-[10px] font-medium animate-in fade-in slide-in-from-right-1">Copied</span>}
         </button>
       </div>
       

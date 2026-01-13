@@ -1,4 +1,4 @@
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Lock } from "lucide-react";
 import { isObject } from "../../utils/treeUtils";
 import { NodeActions } from "../NodeActions/NodeActions";
 
@@ -19,6 +19,7 @@ export default function TreeNode({
   draggedNode,
   onDragEnd,
   onDisable,
+  disabledNodes = {},
 }) {
   const isObj = isObject(value);
   const nodePath = [...path, nodeKey];
@@ -29,6 +30,8 @@ export default function TreeNode({
   const isDragging =
     draggedNode &&
     JSON.stringify(draggedNode.path) === JSON.stringify(nodePath);
+  
+  const isDisabled = disabledNodes[pathStr];
 
   return (
     <div className="select-none w-full relative">
@@ -37,17 +40,19 @@ export default function TreeNode({
           group flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer 
           transition-all duration-200 border border-transparent
           ${
-            isSelected
+            isDisabled 
+            ? "bg-slate-50" 
+            : isSelected
               ? "bg-indigo-50 border-indigo-200 text-indigo-700 shadow-sm"
               : "hover:bg-slate-50 hover:border-slate-200 text-slate-700 hover:text-slate-900"
           } 
           ${isDragging ? "opacity-50 scale-[0.98] border-dashed border-indigo-400 bg-indigo-50/50" : ""}
         `}
-        draggable={true}
-        onDragStart={(e) => onDragStart(e, nodePath, nodeKey)}
-        onDragOver={(e) => onDragOver(e, nodePath, isObj)}
-        onDrop={(e) => onDrop(e, nodePath)}
-        onDragEnd={(e) => onDragEnd(e)}
+        draggable={!isDisabled}
+        onDragStart={(e) => !isDisabled && onDragStart(e, nodePath, nodeKey)}
+        onDragOver={(e) => !isDisabled && onDragOver(e, nodePath, isObj)}
+        onDrop={(e) => !isDisabled && onDrop(e, nodePath)}
+        onDragEnd={(e) => !isDisabled && onDragEnd(e)}
         onClick={() => onSelect(nodePath)}
       >
         <div className="flex items-center justify-center w-5 h-5 shrink-0">
@@ -59,8 +64,9 @@ export default function TreeNode({
               }}
               className={`
                 p-0.5 rounded-sm transition-all duration-200 
-                ${isSelected ? "hover:bg-indigo-100 text-indigo-500" : "hover:bg-slate-200 text-slate-400 group-hover:text-slate-600"}
+                ${isDisabled ? "text-slate-400" : isSelected ? "hover:bg-indigo-100 text-indigo-500" : "hover:bg-slate-200 text-slate-400 group-hover:text-slate-600"}
               `}
+              disabled={isDisabled}
             >
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-200 ${
@@ -71,8 +77,9 @@ export default function TreeNode({
           )}
         </div>
 
-        <span className={`text-sm font-medium ${isSelected ? "font-semibold" : ""}`}>
+        <span className={`text-sm flex items-center gap-2 ${isSelected ? "font-semibold" : "font-medium"} ${isDisabled ? "text-slate-400 line-through decoration-slate-300" : ""}`}>
           {nodeKey}
+          {isDisabled && <Lock className="w-3 h-3 text-slate-400" />}
         </span>
 
         {isDragging ? (
@@ -86,6 +93,7 @@ export default function TreeNode({
             onEdit={() => onEdit(nodePath)}
             onDelete={() => onDelete(nodePath)}
             onDisable={() => onDisable(nodePath)}
+            isDisabled={isDisabled}
           />
         ) : null}
       </div>
@@ -114,6 +122,7 @@ export default function TreeNode({
               draggedNode={draggedNode}
               onDragEnd={onDragEnd}
               onDisable={onDisable}
+              disabledNodes={disabledNodes}
             />
           ))}
         </div>

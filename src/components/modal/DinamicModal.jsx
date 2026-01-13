@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { X, CheckCircle } from "lucide-react";
 import Button from "../Button";
 
 export default function DynamicModal({
@@ -10,6 +10,7 @@ export default function DynamicModal({
   initialKey,
   initialValue,
   nodeKey = "",
+  isCurrentlyDisabled = false,
 }) {
   const [keyInput, setKeyInput] = useState(initialKey);
   const [valueInput, setValueInput] = useState(initialValue);
@@ -53,7 +54,7 @@ export default function DynamicModal({
     add: "Add New Node",
     update: "Update Node",
     delete: "Confirm Delete",
-    disable: "Confirm Disable",
+    disable: isCurrentlyDisabled ? "Confirm Enable" : "Confirm Disable",
   };
 
   return (
@@ -139,16 +140,16 @@ export default function DynamicModal({
         )}
 
         {(type === "delete" || type === "disable") && (
-          <div className="bg-red-50 p-4 rounded-xl border border-red-100 mb-6 flex items-start gap-4">
-            <div className={`p-2 rounded-full shrink-0 ${type === 'delete' ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-600'}`}>
-              <X size={20} /> {/* We could use AlertTriangle if imported, but X is okay or we can just skip icon */}
+          <div className={`${isCurrentlyDisabled && type === "disable" ? "bg-emerald-50 border-emerald-100" : type === "delete" ? "bg-red-50 border-red-100" : "bg-amber-50 border-amber-100"} p-4 rounded-xl border mb-6 flex items-start gap-4`}>
+            <div className={`p-2 rounded-full shrink-0 ${isCurrentlyDisabled && type === "disable" ? "bg-emerald-100 text-emerald-600" : type === 'delete' ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-600'}`}>
+              {isCurrentlyDisabled && type === "disable" ? <CheckCircle size={20} /> : <X size={20} />} 
             </div>
             <div>
-               <h3 className={`text-sm font-bold ${type === 'delete' ? 'text-red-800' : 'text-amber-800'}`}>
-                 {type === 'delete' ? 'Delete Node' : 'Disable Node'}
+               <h3 className={`text-sm font-bold ${isCurrentlyDisabled && type === "disable" ? "text-emerald-800" : type === 'delete' ? 'text-red-800' : 'text-amber-800'}`}>
+                 {type === 'delete' ? 'Delete Node' : isCurrentlyDisabled ? 'Enable Node' : 'Disable Node'}
                </h3>
                <p className="text-sm text-slate-600 mt-1">
-                Are you sure you want to <strong>{type}</strong> the node <span className="font-mono bg-white px-1.5 py-0.5 rounded border border-slate-200 text-slate-700">{nodeKey}</span>?
+                Are you sure you want to <strong>{isCurrentlyDisabled && type === "disable" ? 'enable' : type}</strong> the node <span className="font-mono bg-white px-1.5 py-0.5 rounded border border-slate-200 text-slate-700">{nodeKey}</span>?
                 {type === 'delete' && " This action cannot be undone."}
               </p>
             </div>
@@ -161,12 +162,13 @@ export default function DynamicModal({
           </Button>
           <Button 
             onClick={handleSubmit} 
-            variant={type === "delete" || type === "disable" ? "danger" : "primary"}
+            variant={type === "delete" ? "danger" : (type === "disable" && isCurrentlyDisabled ? "primary" : (type === "disable" ? "danger" : "primary"))}
+            className={type === "disable" && isCurrentlyDisabled ? "!bg-emerald-600 hover:!bg-emerald-700" : ""}
           >
             {type === "delete"
               ? "Delete"
               : type === "disable"
-              ? "Disable"
+                ? (isCurrentlyDisabled ? "Enable" : "Disable")
               : "Save Changes"}
           </Button>
         </div>

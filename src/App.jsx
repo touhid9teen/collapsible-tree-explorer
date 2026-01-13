@@ -12,6 +12,7 @@ import {
 } from "./utils/treeUtils";
 import DynamicModal from "./components/modal/DinamicModal";
 import { useLocalStorage } from "./hooks/useLocalStorage";
+import { FileJson, Github } from "lucide-react";
 
 export default function App() {
   const [showModal, setShowModal] = useState(false);
@@ -83,14 +84,17 @@ export default function App() {
   };
 
   const handleDisable = (nodePath) => {
-    if (disableNodePath[nodePath]) {
-      alert("THIS NODE IS ALREADY DISABLED");
-      return;
-    }
-    setDisableNodePath((prev) => ({
-      ...prev,
-      [nodePath]: true,
-    }));
+    const pathStr = Array.isArray(nodePath) ? nodePath.join(">") : nodePath;
+
+    setDisableNodePath((prev) => {
+        const newState = { ...prev };
+        if (newState[pathStr]) {
+            delete newState[pathStr];
+        } else {
+            newState[pathStr] = true;
+        }
+        return newState;
+    });
   };
 
   const handleDragStart = (e, sourcePath, nodeKey) => {
@@ -157,7 +161,7 @@ export default function App() {
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-md shadow-indigo-200">
-              <span className="text-white font-bold text-lg leading-none">J</span>
+              <FileJson className="text-white w-5 h-5" />
             </div>
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
@@ -166,20 +170,13 @@ export default function App() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Button
-              variant="secondary"
-              className="hidden sm:flex"
-              onClick={() => window.open('https://github.com/touhid9teen', '_blank')}
+            <button
+              className="hidden sm:flex items-center gap-2.5 px-5 py-2.5 bg-slate-900 text-slate-50 rounded-full hover:bg-slate-800 transition-all duration-300 shadow-lg shadow-slate-200 hover:shadow-xl hover:-translate-y-0.5 group border border-slate-800"
+              onClick={() => window.open('https://github.com/touhid9teen/collapsible-tree-explorer', '_blank')}
             >
-              GitHub
-            </Button>
-            <div className="h-8 w-px bg-slate-200 hidden sm:block"></div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-slate-600 hidden sm:inline-block">Status:</span>
-              <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
-                Active
-              </span>
-            </div>
+              <Github className="w-5 h-5 text-white" />
+              <span className="font-semibold text-sm tracking-wide group-hover:text-white">Star my work</span>
+            </button>
           </div>
         </div>
       </header>
@@ -225,6 +222,7 @@ export default function App() {
                     onDragEnd={handleDragEnd}
                     onDrop={handleDrop}
                     onDisable={() => openModal("disable")}
+                    disabledNodes={disableNodePath}
                   />
                </div>
                <div className="p-3 bg-slate-50 border-t border-slate-200 text-xs text-center text-slate-500">
@@ -259,6 +257,9 @@ export default function App() {
         initialValue={actionType === "update" ? currentValue : ""}
         nodeKey={
           selectedPath.length > 0 ? selectedPath[selectedPath.length - 1] : ""
+        }
+        isCurrentlyDisabled={
+          disableNodePath[Array.isArray(selectedPath) ? selectedPath.join(">") : selectedPath]
         }
       />
     </div>
