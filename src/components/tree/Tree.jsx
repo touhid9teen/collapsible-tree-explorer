@@ -19,7 +19,7 @@ export default function Tree({
   if (!data || typeof data !== "object") return <p>No JSON Loaded</p>;
 
   return (
-    <div className="w-full text-sm text-gray-800 font-mono ">
+    <div className="w-full text-sm text-slate-700 pb-12">
       {Object.entries(data).map(([key, value]) => (
         <TreeNode
           key={key}

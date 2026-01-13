@@ -151,55 +151,99 @@ export default function App() {
       : getValueAtPath(importedJson, selectedPath);
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 p-6 md:p-10">
-      <div className="mb-4 bg-white rounded-xl shadow-sm border p-4">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-500 leading-tight">
-            JSON Tree
-          </h1>
-          <p className="text-xs sm:text-sm md:text-base text-gray-600 mt-2">
-            Explore & Manage Hierarchical Data
-          </p>
-        </div>
-      </div>
-
-      <div className="flex flex-col md:flex-row gap-6 h-full">
-        <div className="w-full md:w-1/2 bg-white rounded-xl shadow-md border p-6 flex flex-col ">
-          <div>
+    <div className="min-h-screen w-full bg-slate-50 text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-700">
+      {/* Navbar / Header */}
+      <header className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-slate-200/60 support-[backdrop-filter]:bg-white/60">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-md shadow-indigo-200">
+              <span className="text-white font-bold text-lg leading-none">J</span>
+            </div>
+            <div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                JSON Explorer
+              </h1>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
             <Button
-              onClick={() => {
-                openModal("import");
-              }}
+              variant="secondary"
+              className="hidden sm:flex"
+              onClick={() => window.open('https://github.com/touhid9teen', '_blank')}
             >
-              Import JSON
+              GitHub
             </Button>
-          </div>
-
-          <div className="flex-1 mt-4 overflow-auto rounded border bg-gray-50 p-4">
-            <Tree
-              data={importedJson}
-              selectedPath={selectedPath}
-              onSelect={setSelectedPath}
-              expandedNodes={expandedNodes}
-              onToggleExpand={toggleExpand}
-              onAdd={() => openModal("add")}
-              onEdit={() => openModal("update")}
-              onDelete={() => openModal("delete")}
-              draggedNode={draggedNode}
-              onDragStart={handleDragStart}
-              onDragOver={handleDragOver}
-              onDragEnd={handleDragEnd}
-              onDrop={handleDrop}
-              onDisable={() => openModal("disable")}
-            />
+            <div className="h-8 w-px bg-slate-200 hidden sm:block"></div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-slate-600 hidden sm:inline-block">Status:</span>
+              <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
+                Active
+              </span>
+            </div>
           </div>
         </div>
+      </header>
 
-        <div className="w-full md:w-1/2 bg-white rounded-xl shadow-md border  flex flex-col overflow-hidden">
-          <Viewport selectedPath={selectedPath} currentValue={currentValue} />
+      {/* Main Content */}
+      <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 h-[calc(100vh-4rem)]">
+        <div className="flex flex-col lg:flex-row gap-6 h-full">
+          {/* Tree Section - Sidebar style on desktop */}
+          <section className="w-full lg:w-1/3 xl:w-1/4 flex flex-col gap-4">
+             <div className="flex items-center justify-between">
+                <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Explorer</h2>
+                <Button
+                  variant="primary"
+                  onClick={() => openModal("import")}
+                  className="!py-1.5 !px-3 !text-xs"
+                >
+                  Import JSON
+                </Button>
+             </div>
+             
+             <div className="flex-1 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+               <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+                  <input 
+                    type="text" 
+                    placeholder="Search nodes..." 
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                    disabled
+                  />
+               </div>
+               <div className="flex-1 overflow-auto custom-scrollbar p-2">
+                  <Tree
+                    data={importedJson}
+                    selectedPath={selectedPath}
+                    onSelect={setSelectedPath}
+                    expandedNodes={expandedNodes}
+                    onToggleExpand={toggleExpand}
+                    onAdd={() => openModal("add")}
+                    onEdit={() => openModal("update")}
+                    onDelete={() => openModal("delete")}
+                    draggedNode={draggedNode}
+                    onDragStart={handleDragStart}
+                    onDragOver={handleDragOver}
+                    onDragEnd={handleDragEnd}
+                    onDrop={handleDrop}
+                    onDisable={() => openModal("disable")}
+                  />
+               </div>
+               <div className="p-3 bg-slate-50 border-t border-slate-200 text-xs text-center text-slate-500">
+                  {Object.keys(importedJson).length > 0 ? "Drag & drop to reorder" : "Start by importing JSON"}
+               </div>
+             </div>
+          </section>
+
+          {/* Viewport Section - Main content area */}
+          <section className="w-full lg:flex-1 h-full flex flex-col gap-4">
+             <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Properties & Preview</h2>
+             <div className="flex-1 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative">
+                <Viewport selectedPath={selectedPath} currentValue={currentValue} />
+             </div>
+          </section>
         </div>
-      </div>
+      </main>
 
+      {/* Modal */}
       <DynamicModal
         type={actionType}
         isOpen={showModal}

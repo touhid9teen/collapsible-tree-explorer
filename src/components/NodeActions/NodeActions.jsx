@@ -22,7 +22,7 @@ export const NodeActions = ({
       />
       {open && (
         <div
-          className="absolute right-0 mt-1 bg-white shadow-md border rounded-lg p-2 flex flex-col z-20"
+          className="absolute right-0 top-full mt-1 w-36 bg-white rounded-lg shadow-xl ring-1 ring-slate-900/5 p-1 z-50 flex flex-col gap-0.5 origin-top-right animate-in fade-in zoom-in-95 duration-100"
           onClick={(e) => e.stopPropagation()}
         >
           <IconButton

@@ -6,20 +6,20 @@ export const IconButton = ({
 }) => {
   const variants = {
     default: {
-      base: "bg-gray-50 hover:bg-gray-100 text-gray-700 hover:text-gray-900 border border-gray-200",
-      shadow: "hover:shadow-sm",
+      base: "bg-transparent hover:bg-slate-100 text-slate-500 hover:text-slate-700 border border-transparent hover:border-slate-200",
+      shadow: "",
     },
     edit: {
-      base: "bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 border border-blue-200",
-      shadow: "hover:shadow-blue-100",
+      base: "bg-indigo-50 hover:bg-indigo-100 text-indigo-600 hover:text-indigo-700 border border-indigo-200",
+      shadow: "shadow-sm",
     },
     add: {
       base: "bg-emerald-50 hover:bg-emerald-100 text-emerald-600 hover:text-emerald-700 border border-emerald-200",
-      shadow: "hover:shadow-emerald-100",
+      shadow: "shadow-sm",
     },
     delete: {
-      base: "bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 border border-red-200",
-      shadow: "hover:shadow-red-100",
+      base: "bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-700 border border-rose-200",
+      shadow: "shadow-sm",
     },
   };
 
@@ -35,16 +35,17 @@ export const IconButton = ({
         transition-all duration-200 ease-in-out
         flex items-center gap-2
         active:scale-95
-        focus:outline-none focus:ring-2 focus:ring-offset-1
-        ${variant === "edit" ? "focus:ring-blue-300" : ""}
-        ${variant === "add" ? "focus:ring-emerald-300" : ""}
-        ${variant === "delete" ? "focus:ring-red-300" : ""}
-        ${variant === "default" ? "focus:ring-gray-300" : ""}
+        outline-none
+        focus-visible:ring-2 focus-visible:ring-offset-1
+        ${variant === "edit" ? "focus-visible:ring-indigo-300" : ""}
+        ${variant === "add" ? "focus-visible:ring-emerald-300" : ""}
+        ${variant === "delete" ? "focus-visible:ring-rose-300" : ""}
+        ${variant === "default" ? "focus-visible:ring-slate-300" : ""}
       `}
       title={title}
     >
-      <Icon size={16} strokeWidth={2} />
-      {title && <span className="text-sm font-medium whitespace-nowrap">{title}</span>}
+      <Icon size={15} strokeWidth={2} />
+      {title && <span className="text-xs font-semibold whitespace-nowrap">{title}</span>}
     </button>
   );
 };
