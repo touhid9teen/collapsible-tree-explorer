@@ -14,8 +14,7 @@ export const NodeActions = ({
   return (
     <div className="relative ml-auto">
       <IconButton
-        icon={MoreVertical}
-        title="Actions"
+        icon={MoreVertical}     
         onClick={(e) => {
           e.stopPropagation();
           setOpen((prev) => !prev);

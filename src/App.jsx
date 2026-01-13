@@ -1,4 +1,4 @@
-import { act, useState } from "react";
+import { useState } from "react";
 import Button from "./components/Button";
 import Viewport from "./components/viewport/Viewport";
 import Tree from "./components/tree/Tree";
